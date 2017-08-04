@@ -16,13 +16,16 @@ namespace ConsoleSOAP
             string endpoint = "http://www.html2xml.nl/Services/Calculator/Version1/Calculator.asmx";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(endpoint);
+
             request.ContentType = "text/xml"; // or application/soap+xml for SOAP 1.2
             request.Method = "POST";
             request.KeepAlive = false;
 
             //In case you have a proxy to resolve the server name also add these lines
             var proxyServer = new WebProxy("XX.XX.XX.XX", 1234);
+
             proxyServer.Credentials = CredentialCache.DefaultCredentials; // or username + password
+
             request.Proxy = proxyServer;
 
             // you can read these from files
@@ -37,9 +40,11 @@ namespace ConsoleSOAP
                             </soapenv:Envelope>";
 
             byte[] byteArray = Encoding.UTF8.GetBytes(payload);
+
             request.ContentLength = byteArray.Length;
 
             Stream requestStream = request.GetRequestStream();
+
             requestStream.Write(byteArray, 0, byteArray.Length);
             requestStream.Close();
 
